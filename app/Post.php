@@ -14,6 +14,11 @@ class Post extends Model
         return $this->belongsTo('App\User','author_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
     public function getDateAttribute($value){
         return is_null($this->published_at) ? '': $this->published_at->diffForHumans();
     }
