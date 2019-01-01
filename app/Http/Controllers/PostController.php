@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
+use Carbon\carbon;
 
 class PostController extends Controller
 {
@@ -17,7 +19,8 @@ class PostController extends Controller
         // $posts= Post::all();
         //$posts= Post::with('user')->orderBy('created_at','desc')->get();
         $posts= Post::with('user')->newest()->published()->paginate(3);
-        return view ('blog.index',compact('posts'));
+        $categories = Category::with('posts')->get();
+        return view ('blog.index',compact('posts','categories'));
     }
 
     /**
@@ -49,8 +52,9 @@ class PostController extends Controller
      */
     public function show(Post $post) //Post::find(wildcard) i.e $id in this case
     {
+        $categories = Category::with('posts')->get();
         // $post= Post::published()->findOrFail($id);
-        return view('blog.show',compact('post'));
+        return view('blog.show',compact('post','categories'));
     }
 
     /**
@@ -85,5 +89,13 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function Category(Category $category)
+    {   $categoryName= $category->title;
+        $categories = Category::with('posts')->get();
+        // $posts= Post::with('category')->published()->where('category_id',$id)->paginate(3);
+        $posts = $category->posts()->where('published_at','<=',Carbon::now())->paginate(3);
+        return view ('blog.index',compact('posts','categories','categoryName'));
     }
 }

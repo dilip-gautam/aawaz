@@ -39,4 +39,9 @@ class Post extends Model
         return $this->where('published_at','<=',Carbon::now());
         
     }
+    
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
