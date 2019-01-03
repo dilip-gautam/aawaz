@@ -31,6 +31,11 @@ class Post extends Model
         return $this->excerpt ? Markdown::convertToHtml(e($this->excerpt)) : NULL;
     }
 
+    public function getPublishedAttribute(){
+        return $this->where('published_at','<=',Carbon::now());
+        
+    }
+
     public function scopenewest(){
         return $this->orderBy('published_at','desc');
     }
@@ -39,7 +44,7 @@ class Post extends Model
         return $this->where('published_at','<=',Carbon::now());
         
     }
-    
+
     public function getRouteKeyName()
     {
         return 'slug';

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Post;
 use App\Category;
 use Carbon\carbon;
@@ -97,5 +98,14 @@ class PostController extends Controller
         // $posts= Post::with('category')->published()->where('category_id',$id)->paginate(3);
         $posts = $category->posts()->where('published_at','<=',Carbon::now())->paginate(3);
         return view ('blog.index',compact('posts','categories','categoryName'));
+    }
+
+    public function author(User $author)
+    {
+        $authorName= $author->name;
+        $categories= Category::with('posts')->get();
+        $posts= $author->post()->where('published_at','<=',Carbon::now())->paginate(3);
+        return view('blog.index',compact('posts','categories','authorName'));
+
     }
 }
