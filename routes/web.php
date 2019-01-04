@@ -17,4 +17,5 @@ Route::resource('post', 'PostController');
 Route::get('/category/{category}','PostController@category')->name('category');
 Route::get('/author/{author}','PostCOntroller@author')->name('author');
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'Backend\HomeController@index')->name('home');
+Route::resource('/backend/blog', 'Backend\BlogController');
